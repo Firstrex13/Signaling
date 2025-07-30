@@ -1,9 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class Signaling : MonoBehaviour
+public class Signal : MonoBehaviour
 {
-    [SerializeField] private HouseTrigger _houseTrigger;
     [SerializeField] private AudioSource _signalingSound;
 
     [SerializeField] private float _speed = 0.5f;
@@ -11,18 +10,6 @@ public class Signaling : MonoBehaviour
     private Coroutine _coroutine;
 
     private float _targetVolume;
-
-    private void OnEnable()
-    {
-        _houseTrigger.EnemyCameIn += StartSignal;
-        _houseTrigger.EnemyWentOut += StopSignal;
-    }
-
-    private void OnDisable()
-    {
-        _houseTrigger.EnemyCameIn -= StartSignal;
-        _houseTrigger.EnemyWentOut -= StopSignal;
-    }
 
     private IEnumerator ChangeVolume(float target)
     {
@@ -43,7 +30,7 @@ public class Signaling : MonoBehaviour
         }
     }
 
-    private void StartSignal()
+    public void StartSignal()
     {
         if (_coroutine != null)
         {
@@ -59,7 +46,7 @@ public class Signaling : MonoBehaviour
         }
     }
 
-    private void StopSignal()
+    public void StopSignal()
     {
         if (_coroutine != null)
         {
