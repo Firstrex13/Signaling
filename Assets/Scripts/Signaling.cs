@@ -24,7 +24,7 @@ public class Signaling : MonoBehaviour
         _houseTrigger.EnemyWentOut -= StopSignal;
     }
 
-    public IEnumerator ChangeVolume(float target)
+    private IEnumerator ChangeVolume(float target)
     {
         while (_signalingSound.volume != target)
         {
@@ -45,7 +45,11 @@ public class Signaling : MonoBehaviour
 
     private void StartSignal()
     {
-        if (_coroutine == null)
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+        }
+        else
         {
             _signalingSound.Play();
 
@@ -57,8 +61,13 @@ public class Signaling : MonoBehaviour
 
     private void StopSignal()
     {
-        _targetVolume = 0;
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
 
-        StartCoroutine(ChangeVolume(_targetVolume));
+            _targetVolume = 0;
+
+            _coroutine = StartCoroutine(ChangeVolume(_targetVolume));
+        }
     }
 }

@@ -8,11 +8,17 @@ public class HouseTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        EnemyCameIn?.Invoke();
+        if (other.TryGetComponent<EnemyMover>(out _))
+        {
+            EnemyCameIn?.Invoke();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        EnemyWentOut?.Invoke();
+        if (other.TryGetComponent<EnemyMover>(out _))
+        {
+            EnemyWentOut?.Invoke();
+        }
     }
 }

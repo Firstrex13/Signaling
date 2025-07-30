@@ -817,7 +817,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 3041d030c478bcf4b8e5dc3cdf099645, type: 3}
   m_Resource: {fileID: 8300000, guid: 3041d030c478bcf4b8e5dc3cdf099645, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -915,8 +915,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _houseTrigger: {fileID: 1508050402}
   _signalingSound: {fileID: 1508050400}
-  _speed: 1
-  _targetVolume: 0
+  _speed: 1.5
 --- !u!114 &1508050402
 MonoBehaviour:
   m_ObjectHideFlags: 0
