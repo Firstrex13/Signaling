@@ -212,7 +212,7 @@ Transform:
   m_GameObject: {fileID: 153728581}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.23, y: -0, z: -9.01}
+  m_LocalPosition: {x: -0.23, y: 0.5, z: -9.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -760,6 +760,7 @@ GameObject:
   - component: {fileID: 1508050397}
   - component: {fileID: 1508050400}
   - component: {fileID: 1508050401}
+  - component: {fileID: 1508050402}
   m_Layer: 0
   m_Name: SignalingTrigger
   m_TagString: Untagged
@@ -912,8 +913,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eaf56863d92e784cbd314a5a3928302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _houseTrigger: {fileID: 1508050402}
   _signalingSound: {fileID: 1508050400}
-  _speed: 0.5
+  _speed: 1
+  _targetVolume: 0
+--- !u!114 &1508050402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508050396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5dae06358b71e0408e878e00ec19062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1716776608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,8 +1375,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9712e8c3520154d4a92122c52bd8d904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetPoint1: {fileID: 337170542}
-  _targetPoint2: {fileID: 153728582}
+  _targetPoints:
+  - {fileID: 337170542}
+  - {fileID: 153728582}
   _speed: 2
 --- !u!54 &2105942054
 Rigidbody:

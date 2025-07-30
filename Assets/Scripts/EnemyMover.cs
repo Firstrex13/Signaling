@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] private Transform _targetPoint1;
-    [SerializeField] private Transform _targetPoint2;
+    [SerializeField] private Transform[] _targetPoints;
 
     [SerializeField] private float _speed;
+
+    private float _distanceToTarget = 0.1f;
+
+    private int _pointIndex;
 
     private void Update()
     {
@@ -14,13 +17,31 @@ public class EnemyMover : MonoBehaviour
 
     private void Move()
     {
+        if (IsTargetReached())
         {
-            transform.position = Vector3.MoveTowards(transform.position, _targetPoint1.position, Time.deltaTime * _speed);
-
-            if(transform.position == _targetPoint1.position)
-            {
-                _targetPoint1 = _targetPoint2;
-            }        
+            GetIndex();
         }
+
+        transform.position = Vector3.MoveTowards(transform.position, _targetPoints[_pointIndex].position, Time.deltaTime * _speed);       
+    }
+
+    private float GetSqrDistance(Vector3 start, Vector3 end)
+    {
+        return (end - start).sqrMagnitude;
+    }
+
+    private bool IsEnoughClose(Vector3 start, Vector3 end, float distance)
+    {
+        return GetSqrDistance(start, end) <= distance * distance;
+    }
+
+    public bool IsTargetReached()
+    {
+        return IsEnoughClose(transform.position, _targetPoints[_pointIndex].position, _distanceToTarget);
+    }
+
+    private int GetIndex()
+    {
+       return _pointIndex = ++_pointIndex % _targetPoints.Length;
     }
 }

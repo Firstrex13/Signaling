@@ -3,58 +3,62 @@ using UnityEngine;
 
 public class Signaling : MonoBehaviour
 {
+    [SerializeField] private HouseTrigger _houseTrigger;
     [SerializeField] private AudioSource _signalingSound;
+
     [SerializeField] private float _speed = 0.5f;
 
-    private void OnTriggerEnter(Collider other)
+    private Coroutine _coroutine;
+
+    private float _targetVolume;
+
+    private void OnEnable()
     {
-        if (other.TryGetComponent<EnemyMover>(out _))
-            _signalingSound.Play();
-        StartCoroutine(IncreaseVolume());
+        _houseTrigger.EnemyCameIn += StartSignal;
+        _houseTrigger.EnemyWentOut += StopSignal;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnDisable()
     {
-        if (other.TryGetComponent<EnemyMover>(out _))
-            StartCoroutine(DecreaseVolume());
+        _houseTrigger.EnemyCameIn -= StartSignal;
+        _houseTrigger.EnemyWentOut -= StopSignal;
     }
 
-    private IEnumerator IncreaseVolume()
+    public IEnumerator ChangeVolume(float target)
     {
-        float currentVolume = 0f;
-        float targetVolume = 1f;
-
-        _signalingSound.volume = currentVolume;
-
-        while (currentVolume < targetVolume)
+        while (_signalingSound.volume != target)
         {
-            currentVolume = Mathf.MoveTowards(currentVolume, targetVolume, Time.deltaTime * _speed);
-
-            _signalingSound.volume = currentVolume;
-
-            yield return null;
-        }
-    }
-
-    private IEnumerator DecreaseVolume()
-    {
-        float currentVolume = 1f;
-        float targetVolume = 0f;
-
-        _signalingSound.volume = currentVolume;
-
-        while (currentVolume > targetVolume)
-        {
-            currentVolume = Mathf.MoveTowards(currentVolume, targetVolume, Time.deltaTime * _speed);
-
-            _signalingSound.volume = currentVolume;
+            _signalingSound.volume = Mathf.MoveTowards(_signalingSound.volume, target, Time.deltaTime * _speed);
 
             yield return null;
         }
 
-        if(currentVolume == targetVolume)
+        if (_signalingSound.volume == 0)
         {
             _signalingSound.Stop();
+
+            StopCoroutine(_coroutine);
+
+            _coroutine = null;
         }
+    }
+
+    private void StartSignal()
+    {
+        if (_coroutine == null)
+        {
+            _signalingSound.Play();
+
+            _targetVolume = 1;
+
+            _coroutine = StartCoroutine(ChangeVolume(_targetVolume));
+        }
+    }
+
+    private void StopSignal()
+    {
+        _targetVolume = 0;
+
+        StartCoroutine(ChangeVolume(_targetVolume));
     }
 }
